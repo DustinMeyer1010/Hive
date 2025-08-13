@@ -1,90 +1,37 @@
 package chat
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 
+	"github.com/DustinMeyer1010/livechat/internal/types"
+	utils "github.com/DustinMeyer1010/livechat/internal/utils/chat"
 	"github.com/gorilla/websocket"
 )
 
-type Client struct {
-	conn  *websocket.Conn
-	group string
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
-var (
-	clients   = make(map[*websocket.Conn]string) // conn => group
-	broadcast = make(chan Message)               // channel for incoming messages
-	upgrader  = websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool { return true }, // allow all origins
-	}
-	groups = make(map[string]map[*websocket.Conn]bool) // group => connections
-)
+func HandleChatConnections(w http.ResponseWriter, r *http.Request) {
+	roomName := r.URL.Query().Get("room")
 
-// Message defines the structure of messages
-type Message struct {
-	Username string `json:"username"`
-	Group    string `json:"group"` // group/chat room ID
-	Message  string `json:"message"`
-}
-
-func HandleConnections(w http.ResponseWriter, r *http.Request) {
-	ws, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Println("Upgrade error:", err)
-		return
-	}
-	defer ws.Close()
-
-	// First message from client should specify the group to join
-	var joinMsg Message
-	err = ws.ReadJSON(&joinMsg)
-	if err != nil {
-		log.Println("Failed to read join message:", err)
-		return
+	if roomName == "" {
+		w.WriteHeader(http.StatusBadRequest)
 	}
 
-	group := joinMsg.Group
-	clients[ws] = group
-
-	// Add client to group map
-	if groups[group] == nil {
-		groups[group] = make(map[*websocket.Conn]bool)
-	}
-	groups[group][ws] = true
-
-	log.Printf("Client joined group %s\n", group)
-
-	for {
-		var msg Message
-		err := ws.ReadJSON(&msg)
-		if err != nil {
-			log.Println("Read error:", err)
-			break
-		}
-		// Set group to client’s group for safety
-		msg.Group = group
-		broadcast <- msg
+	conn, _ := upgrader.Upgrade(w, r, nil)
+	client := &types.Client{
+		Conn: conn,
+		Send: make(chan []byte),
+		Room: roomName,
 	}
 
-	// Cleanup on disconnect
-	delete(clients, ws)
-	delete(groups[group], ws)
-}
+	room := utils.RoomConnection(roomName)
+	room.Clients[client] = true
 
-func HandleMessages() {
-	for {
-		msg := <-broadcast
-		conns := groups[msg.Group]
+	fmt.Println(len(room.Clients))
 
-		for client := range conns {
-			err := client.WriteJSON(msg)
-			if err != nil {
-				log.Println("Write error:", err)
-				client.Close()
-				delete(clients, client)
-				delete(groups[msg.Group], client)
-			}
-		}
-	}
+	go utils.ReadMessage(client, room)
+	go utils.WriteMessage(client)
 }

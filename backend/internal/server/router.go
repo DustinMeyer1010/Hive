@@ -20,9 +20,7 @@ func createRouter() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", reactHandler)
-	mux.HandleFunc("/ws", chat.HandleConnections)
-
-	go chat.HandleMessages()
+	mux.HandleFunc("/ws", chat.HandleChatConnections)
 
 	return mux
 }
