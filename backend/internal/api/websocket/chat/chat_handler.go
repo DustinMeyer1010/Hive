@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/DustinMeyer1010/livechat/internal/types"
-	utils "github.com/DustinMeyer1010/livechat/internal/utils/chat"
 	"github.com/gorilla/websocket"
 )
 
@@ -27,11 +26,11 @@ func HandleChatConnections(w http.ResponseWriter, r *http.Request) {
 		Room: roomName,
 	}
 
-	room := utils.RoomConnection(roomName)
+	room := RoomConnection(roomName)
 	room.Clients[client] = true
 
 	fmt.Println(len(room.Clients))
 
-	go utils.ReadMessage(client, room)
-	go utils.WriteMessage(client)
+	go ReadMessage(client, room)
+	go WriteMessage(client)
 }
