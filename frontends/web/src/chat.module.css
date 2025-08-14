@@ -1,0 +1,17 @@
+.chat_container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    padding: 50px;
+    overflow-y: auto;
+}
+
+.chat_message {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    width: 50%;
+    height: 30px;
+    transform: translateX(-50%);
+}

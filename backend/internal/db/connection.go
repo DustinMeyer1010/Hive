@@ -2,52 +2,32 @@ package db
 
 import (
 	"context"
-	"fmt"
 	"log"
 
-	"github.com/jackc/pgx"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type Connection struct {
-	Config pgx.ConnConfig
-	conn   *pgx.Conn
-}
+var Pool *pgxpool.Pool
 
-var db Connection
+func Init() {
+	connStr := "postgres://dustinmeyer@localhost:5432/cwf"
 
-func (c *Connection) Close() {
-	if c.conn != nil {
-		c.conn.Close()
-		fmt.Println("Disconnected from PostgeSQL")
-	}
-}
-
-func (c *Connection) Connect() {
 	var err error
-
-	c.conn, err = pgx.Connect(c.Config)
-
-	if err != nil {
-		log.Fatal("Error opening DB: ", err)
-	}
-
-	err = c.conn.Ping(context.Background())
+	Pool, err = pgxpool.New(context.Background(), connStr)
 
 	if err != nil {
-		log.Fatal("Could not connect:", err)
+		log.Fatal("Unable to create Postgres pool: %v", err)
 	}
 
-	fmt.Println("Connected to PostgreSQL!")
-}
+	Pool.Config().MaxConns = 25
+	Pool.Config().MinConns = 5
 
-func CreateConnection(config pgx.ConnConfig) error {
-	db.Config = config
-	db.Connect()
+	err = Pool.Ping(context.Background())
 
-	return nil
-}
+	if err != nil {
+		log.Fatal("Unable to ping database: %v", err)
+	}
 
-func Close() error {
-	db.Close()
-	return nil
+	log.Println("Postgres connection pool initialized")
+
 }

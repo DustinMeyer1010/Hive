@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/DustinMeyer1010/livechat/internal/db"
 	"github.com/DustinMeyer1010/livechat/internal/types"
 	"github.com/gorilla/websocket"
 )
@@ -17,6 +18,7 @@ func ReadMessage(c *types.Client, room *types.Room) {
 			break
 		}
 		room.Broadcast <- msg
+		db.SaveMessage(msg)
 	}
 
 }
