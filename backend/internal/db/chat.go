@@ -2,16 +2,16 @@ package db
 
 import (
 	"context"
-	"fmt"
 )
 
 func SaveMessage(msg []byte) error {
 	queryString := "INSERT INTO chat (msg) VALUES ($1)"
 
-	pgCommand, err := Pool.Exec(context.Background(), queryString, msg)
+	_, err := Pool.Exec(context.Background(), queryString, msg)
 
-	fmt.Println(pgCommand)
-	fmt.Println(err)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

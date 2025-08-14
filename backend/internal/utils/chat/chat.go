@@ -7,6 +7,8 @@ import (
 )
 
 func ReadMessage(c *types.Client, room *types.Room) {
+	const { isLoggedIn } = useAuth()
+
 	defer func() {
 		room.Clients[c] = false
 		c.Conn.Close()

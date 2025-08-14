@@ -1,10 +1,14 @@
 import { useEffect,  useRef, useState } from "react";
 import Styles from "./chat.module.css"
+import { useAuth } from "./providers/authentication";
+import { Navigate } from "react-router-dom";
 
 const Chat = () => {
   const ws = useRef<WebSocket | null>(null);
+  	const { isLoggedIn } = useAuth()
   const [messages, setMessages] = useState<string[]>([]);
   const [input, setInput] = useState("");
+
 
   useEffect(() => {
     ws.current = new WebSocket(`ws://localhost:5000/ws?room=${1}`);

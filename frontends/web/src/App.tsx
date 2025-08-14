@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Chat from "./chat";
+import ProtectedRoute from "./providers/ProtectedRoute";
 
 function App() {
 
@@ -8,8 +9,13 @@ function App() {
 
       <Router>
         <Routes>
-          <Route path="/" element={ <Chat /> } />
-          {/*<Route path="/login" element={ <Login/> }/>*/}
+            <Route path="/" element={ 
+              <ProtectedRoute>
+                <Chat /> 
+              </ProtectedRoute>
+              } />
+
+            <Route path="/login" element={ <div>Login</div> }/>
         </Routes>
       </Router>
 
