@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Chat from "./chat";
+import Chat from "./Chat";
 import ProtectedRoute from "./providers/ProtectedRoute";
+import Groups from "./Groups";
 
 function App() {
 
@@ -8,6 +9,7 @@ function App() {
   return (
 
       <Router>
+        <Groups/>
         <Routes>
             <Route path="/" element={ 
               <ProtectedRoute>

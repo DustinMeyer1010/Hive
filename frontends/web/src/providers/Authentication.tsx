@@ -9,7 +9,7 @@ type Auth = {
 const AuthContext = createContext<Auth | undefined>(undefined)
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
 
 
     const login = () => setIsLoggedIn(true);

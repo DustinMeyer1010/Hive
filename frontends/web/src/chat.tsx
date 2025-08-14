@@ -1,11 +1,11 @@
 import { useEffect,  useRef, useState } from "react";
-import Styles from "./chat.module.css"
-import { useAuth } from "./providers/authentication";
+import Styles from "./styles/chat.module.css"
 import { Navigate } from "react-router-dom";
+import { useAuth } from "./providers/authentication";
 
 const Chat = () => {
   const ws = useRef<WebSocket | null>(null);
-  	const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useAuth()
   const [messages, setMessages] = useState<string[]>([]);
   const [input, setInput] = useState("");
 
@@ -26,7 +26,6 @@ const Chat = () => {
     if (e.key != "Enter") {
         return 
     }
-    console.log("here")
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(input);
       setInput("");

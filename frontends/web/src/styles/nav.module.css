@@ -1,0 +1,22 @@
+.container {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    left: 0px;
+    width: 300px;
+    height: 100vh;
+    top: 50%;
+    transform: translateY(-50%);
+    background: black;
+}
+
+.chat {
+    width: 100%;
+    height: fit-content;
+    padding: 10px;
+    text-align: center;
+}
+
+.chat:hover {
+    background: rgba(255,255,255,0.5);
+}
