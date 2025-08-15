@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/DustinMeyer1010/livechat/internal/types"
+	"github.com/DustinMeyer1010/hive/internal/types"
 )
 
 // TODO

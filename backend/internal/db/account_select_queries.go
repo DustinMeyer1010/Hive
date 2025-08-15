@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/DustinMeyer1010/livechat/internal/types"
+	"github.com/DustinMeyer1010/hive/internal/types"
 )
 
 // Provided a username and the feilds it will return the account that was found with the username.

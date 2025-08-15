@@ -1,4 +1,4 @@
-module github.com/DustinMeyer1010/livechat
+module github.com/DustinMeyer1010/hive
 
 go 1.23.6
 

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/DustinMeyer1010/livechat/internal/db"
-	"github.com/DustinMeyer1010/livechat/internal/services"
-	"github.com/DustinMeyer1010/livechat/internal/types"
+	"github.com/DustinMeyer1010/hive/internal/db"
+	"github.com/DustinMeyer1010/hive/internal/services"
+	"github.com/DustinMeyer1010/hive/internal/types"
 )
 
 func CreateAccount(w http.ResponseWriter, r *http.Request) {

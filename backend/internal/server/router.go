@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"path"
 
-	"github.com/DustinMeyer1010/livechat/internal/handlers"
+	"github.com/DustinMeyer1010/hive/internal/handlers"
 )
 
 //go:embed dist/*

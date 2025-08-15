@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/DustinMeyer1010/livechat/internal/services"
-	"github.com/DustinMeyer1010/livechat/internal/types"
+	"github.com/DustinMeyer1010/hive/internal/services"
+	"github.com/DustinMeyer1010/hive/internal/types"
 	"github.com/gorilla/websocket"
 )
 
