@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS message (
+    id SERIAL PRIMARY KEY,
+    message TEXT NOT NULL,
+    chat_id INT NOT NULL,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (chat_id) REFERENCES chat(id)
+);

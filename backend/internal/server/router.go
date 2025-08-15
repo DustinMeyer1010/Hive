@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"path"
 
-	"github.com/DustinMeyer1010/livechat/internal/api/websocket/chat"
+	"github.com/DustinMeyer1010/livechat/internal/handlers"
 )
 
 //go:embed dist/*
@@ -20,7 +20,9 @@ func createRouter() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", reactHandler)
-	mux.HandleFunc("/ws", chat.HandleChatConnections)
+	mux.HandleFunc("/ws", handlers.ChatConnections)
+	mux.HandleFunc("/create/account", handlers.CreateAccount)
+	mux.HandleFunc("/account/login", handlers.Login)
 
 	return mux
 }

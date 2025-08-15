@@ -1,0 +1,1 @@
+INSERT INTO accounts (username, hashed_password, email, creation_date) values ($1, $2, $3, $4);

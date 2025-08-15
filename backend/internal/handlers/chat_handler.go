@@ -1,9 +1,10 @@
-package chat
+package handlers
 
 import (
 	"fmt"
 	"net/http"
 
+	"github.com/DustinMeyer1010/livechat/internal/services"
 	"github.com/DustinMeyer1010/livechat/internal/types"
 	"github.com/gorilla/websocket"
 )
@@ -12,7 +13,13 @@ var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
-func HandleChatConnections(w http.ResponseWriter, r *http.Request) {
+func ChatConnections(w http.ResponseWriter, r *http.Request) {
+
+	if VerifyGetRequest(r.Method) {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	roomName := r.URL.Query().Get("room")
 
 	if roomName == "" {
@@ -26,11 +33,11 @@ func HandleChatConnections(w http.ResponseWriter, r *http.Request) {
 		Room: roomName,
 	}
 
-	room := RoomConnection(roomName)
+	room := services.RoomConnection(roomName)
 	room.Clients[client] = true
 
 	fmt.Println(len(room.Clients))
 
-	go ReadMessage(client, room)
-	go WriteMessage(client)
+	go services.ReadMessage(client, room)
+	go services.WriteMessage(client)
 }

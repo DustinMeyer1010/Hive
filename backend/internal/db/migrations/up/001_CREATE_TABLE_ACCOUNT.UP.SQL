@@ -1,7 +1,7 @@
-CREATE TABLE accounts (
+CREATE TABLE IF NOT EXISTS accounts (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     hashed_password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    creation_date DATE NOT NULL,
-)
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

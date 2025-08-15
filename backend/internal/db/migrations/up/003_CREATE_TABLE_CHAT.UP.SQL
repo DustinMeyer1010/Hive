@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS chat (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    hive_id int NOT NULL,
+    FOREIGN KEY (hive_id) REFERENCES hive(id)
+);
