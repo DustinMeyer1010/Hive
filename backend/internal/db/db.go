@@ -9,22 +9,22 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-var Pool *pgxpool.Pool
+var pool *pgxpool.Pool
 
 func Init() {
 	connStr := "postgres://dustinmeyer@localhost:5432/cwf"
 
 	var err error
-	Pool, err = pgxpool.New(context.Background(), connStr)
+	pool, err = pgxpool.New(context.Background(), connStr)
 
 	if err != nil {
 		log.Fatal("unable to create Postgres pool: %v", err)
 	}
 
-	Pool.Config().MaxConns = 25
-	Pool.Config().MinConns = 5
+	pool.Config().MaxConns = 25
+	pool.Config().MinConns = 5
 
-	err = Pool.Ping(context.Background())
+	err = pool.Ping(context.Background())
 
 	if err != nil {
 		log.Fatal("unable to ping database: %v", err)
@@ -46,7 +46,7 @@ func createTables() {
 		query = append(query, data...)
 	}
 
-	pg, err := Pool.Exec(context.Background(), string(query))
+	pg, err := pool.Exec(context.Background(), string(query))
 
 	fmt.Println(pg, err)
 }

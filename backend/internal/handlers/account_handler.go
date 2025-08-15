@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/DustinMeyer1010/livechat/internal/db"
+	"github.com/DustinMeyer1010/livechat/internal/services"
 	"github.com/DustinMeyer1010/livechat/internal/types"
 )
 
@@ -14,7 +15,7 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 
 	defer r.Body.Close()
 
-	if VerifyPostRequest(r.Method) {
+	if services.VerifyPostRequest(r.Method) {
 		http.Error(w, "invalid method", http.StatusBadRequest)
 		return
 	}
@@ -42,7 +43,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	defer r.Body.Close()
 
-	if VerifyPostRequest(r.Method) {
+	if services.VerifyPostRequest(r.Method) {
 		http.Error(w, "invalid method", http.StatusBadRequest)
 		return
 	}
@@ -51,9 +52,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid Json", http.StatusBadRequest)
 	}
 
-	account, err := db.GetAccountByUsername("dustinmeyer")
+	acc, err := db.GetAccountByUsername("dustinmeyer", "username", "hashed_password")
 
 	fmt.Println(err)
+	fmt.Println(acc.Username)
+	fmt.Println(acc.HashedPassword)
 
-	fmt.Println(account.Username, account.HashedPassword)
 }

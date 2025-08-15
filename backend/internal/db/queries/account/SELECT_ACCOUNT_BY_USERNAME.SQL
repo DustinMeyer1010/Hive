@@ -1,3 +1,3 @@
-SELECT username, hashed_password 
+SELECT {{fields}}
 FROM accounts
 WHERE username = $1;

@@ -15,7 +15,7 @@ var upgrader = websocket.Upgrader{
 
 func ChatConnections(w http.ResponseWriter, r *http.Request) {
 
-	if VerifyGetRequest(r.Method) {
+	if services.VerifyGetRequest(r.Method) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}

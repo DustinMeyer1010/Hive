@@ -1,4 +1,4 @@
-package handlers
+package services
 
 func VerifyGetRequest(method string) bool {
 	return !(method == "GET")
